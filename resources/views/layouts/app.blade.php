@@ -75,7 +75,7 @@ background: linear-gradient(90deg, rgba(233,225,215,1) 0%, rgba(230,230,230,1) 4
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mx-auto" style="font-weight: bold;">
                         <li class="nav-item">
-                            <a href="#" class="nav-link {{ request()->routeIs('products.dashboard') ? 'active' : '' }}">
+                            <a href="{{ route('products.dashboard') }}" class="nav-link {{ request()->routeIs('products.dashboard') ? 'active' : '' }}">
                                 {{ __('Dashboard') }}
                             </a>
                         </li>
@@ -92,6 +92,11 @@ background: linear-gradient(90deg, rgba(233,225,215,1) 0%, rgba(230,230,230,1) 4
                         <li class="nav-item">
                             <a href="{{ route('products.supplier.index') }}" class="nav-link {{ request()->routeIs('products.supplier.index') ? 'active' : '' }}">
                                 {{ __('Manage Suppliers') }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('products.users.index') }}" class="nav-link {{ request()->routeIs('products.users.index') ? 'active' : '' }}">
+                                {{ __('Manage Users') }}
                             </a>
                         </li>
                     </ul>

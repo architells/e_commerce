@@ -1,4 +1,4 @@
-@extends('layouts.consumer')
+@extends('layouts.customer')
 <style>
     .product-card {
         cursor: pointer;
@@ -67,7 +67,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-8 offset-md-2">
-                            <form action="{{ route('products.index') }}" method="GET">
+                            <form action="{{ route('customer.index') }}" method="GET">
                                 <div class="input-group">
                                     <input type="search" name="search" value="{{ $search ?? '' }}" class="rounded border-gray-300 form-control form-control-lg" placeholder="Type your keywords here">
                                     <div class="input-group-append">
@@ -80,19 +80,22 @@
                 </div>
             </aside>
 
-            <div class="d-flex justify-content-end">
-                <a class="btn btn-secondary" href="{{ route('products.create') }}">Create New Products</a>
-            </div>
 
-            <ul class="list-unstyled d-flex flex-row">
+            <ul class="list-unstyled d-flex flex-row mt-3">
+                <li class="mb-2 me-2">
+                    <a href="{{ route('customer.index') }}" class="btn btn-outline-secondary btn-sm skew-button">
+                        All Products
+                    </a>
+                </li>
                 @foreach($categories as $category)
                 <li class="mb-2 me-2">
-                    <a href="{{ route('products.categories.show', $category->id) }}" class="btn btn-outline-secondary btn-sm skew-button">
+                    <a href="{{ route('customer.category', $category->id) }}" class="btn btn-outline-secondary btn-sm skew-button">
                         {{ $category->name }}
                     </a>
                 </li>
                 @endforeach
             </ul>
+
 
 
             <div class="table-responsive mt-3">
@@ -105,7 +108,7 @@
                     @foreach($products as $product)
                     <div class="col-md-3 mb-4 d-flex">
                         <div class="card product-card w-100 shadow-sm"
-                            data-url="{{ route('products.description', $product->id) }}">
+                            data-url="{{ route('customer.description', $product->id) }}">
                             @if($product->product_image)
                             <img src="{{ Storage::url($product->product_image) }}" class="card-img-top" alt="{{ $product->product_name }}">
                             @else

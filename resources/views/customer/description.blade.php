@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.customer')
 
 @section('content')
 <div class="container">
@@ -36,13 +36,36 @@
                     @else
                     <span style="color: red; font-size: 0.8rem;">Out of Stock</span>
                     @endif
-                    <p><strong>Category:</strong> {{ $product->category ? $product->category->name : 'N/A' }}</p>
-                    <p><strong>Supplier:</strong> {{ $product->supplier ? $product->supplier->name : 'N/A' }}</p>
 
-                    <a href="{{ route('products.index') }}" class="btn btn-secondary">Back to Products</a>
-                    <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning">
-                        Edit <i class="bi bi-pen ms-2"></i>
-                    </a>
+                    <div class="card mt-3" style="max-width: 100%;">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <p class="card-text mt-2">
+                                    @if($product->discount)
+                                    <span style="color: green; font-size: 1.2rem; font-weight: bold;">
+                                        ₱{{ number_format($product->discountedPrice($product->discount), 2, '.', ',') }}
+                                    </span>
+                                    <br>
+                                    @else
+                                    <span style="color: red; font-size: 1rem; font-weight: bold;">
+                                        ₱{{ number_format($product->price, 2, '.', ',') }}
+                                    </span><br>
+                                    @endif
+                                </p>
+                            </h5>
+
+                            <form action="#" method="POST">
+                                @csrf
+                                <div class="form-group">
+                                    <label for="quantity">Quantity</label>
+                                    <input type="number" name="quantity" id="quantity" class="form-control" value="1" min="1" max="{{ $product->stock }}" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block">Add to Cart</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <a href="{{ route('customer.index') }}" class="btn btn-secondary mt-2">Back to Products</a>
                 </div>
             </div>
         </div>

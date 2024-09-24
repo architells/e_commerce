@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class productController extends Controller
@@ -15,6 +16,12 @@ class productController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function dashboard()
+    {
+        // Return a view with the products
+        return view('products.dashboard');
+    }
+
     public function index(Request $request)
     {
         $products = Product::query();
@@ -22,15 +29,16 @@ class productController extends Controller
         if ($request->session()->has('filtered_products')) {
             $products = $products->whereIn('id', session('filtered_products'));
         } else {
-            $products = $products->get(); 
+            $products = $products->get();
         }
 
-        $categories = Category::all(); 
+        $categories = Category::all();
+        $user = Auth::user();
 
         $search = $request->input('search');
         $products = Product::where('product_name', 'LIKE', "%{$search}%")->get();
 
-        return view('products.index', compact('products', 'categories', 'search'));
+        return view('products.index', compact('products', 'categories', 'search', 'user'));
     }
 
 
@@ -41,8 +49,9 @@ class productController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Product::class);
         $categories = Category::all();
-        $suppliers = Supplier::all(); 
+        $suppliers = Supplier::all();
 
         return view('products.create', compact('categories', 'suppliers'));
     }
@@ -61,17 +70,18 @@ class productController extends Controller
             'price' => 'required|numeric',
             'stock' => 'required|integer',
             'product_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'category_id' => 'required|exists:categories,id', 
-            'supplier_id' => 'required|exists:suppliers,id', 
+            'category_id' => 'required|exists:categories,id',
+            'supplier_id' => 'required|exists:suppliers,id',
         ]);
 
+        $this->authorize('create', Product::class);
         $product = new Product();
         $product->product_name = $request->input('product_name');
         $product->description = $request->input('description');
         $product->price = $request->input('price');
         $product->stock = $request->input('stock');
-        $product->category_id = $request->input('category_id'); 
-        $product->supplier_id = $request->input('supplier_id'); 
+        $product->category_id = $request->input('category_id');
+        $product->supplier_id = $request->input('supplier_id');
 
         // Handle file upload if present
         if ($request->hasFile('product_image')) {
@@ -92,7 +102,7 @@ class productController extends Controller
      */
     public function show(string $id)
     {
-        
+
         $product = Product::findOrFail($id);
         // Return a view to show the product details
         return view('products.show', compact('product'));
@@ -128,12 +138,20 @@ class productController extends Controller
      */
     public function edit(string $id)
     {
+        // Fetch the product first before authorizing
         $product = Product::findOrFail($id);
-        $categories = Category::all(); 
-        $suppliers = Supplier::all(); 
 
+        // Now you can authorize the update action
+        $this->authorize('update', $product);
+
+        // Fetch categories and suppliers
+        $categories = Category::all();
+        $suppliers = Supplier::all();
+
+        // Return the edit view with the fetched data
         return view('products.edit', compact('product', 'categories', 'suppliers'));
     }
+
 
 
     /**
@@ -159,24 +177,24 @@ class productController extends Controller
             'price' => 'required|numeric',
             'stock' => 'required|integer',
             'product_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'category_id' => 'required|exists:categories,id', 
+            'category_id' => 'required|exists:categories,id',
             'supplier_id' => 'required|exists:suppliers,id',
-            'discount' => 'required|numeric', 
+            'discount' => 'required|numeric',
         ]);
 
         // Fetch the product by its ID
         $product = Product::findOrFail($id);
 
         // Authorize the user to update the product
-
+        $this->authorize('update', $product);
 
         // Update product attributes
         $product->product_name = $request->input('product_name');
         $product->description = $request->input('description');
         $product->price = $request->input('price');
         $product->stock = $request->input('stock');
-        $product->category_id = $request->input('category_id'); 
-        $product->supplier_id = $request->input('supplier_id'); 
+        $product->category_id = $request->input('category_id');
+        $product->supplier_id = $request->input('supplier_id');
         $product->discount = $request->input('discount');
 
         // Handle file upload if present
@@ -209,7 +227,7 @@ class productController extends Controller
         $product = Product::findOrFail($id);
 
         // Authorize the user to delete the product
-
+        $this->authorize('delete', Product::class);
         // Delete the product image if it exists
         if ($product->product_image) {
             Storage::delete('public/' . $product->product_image);

@@ -38,8 +38,8 @@
         <div class="form-group">
             <label for="category_id">Category:</label>
             <select name="category_id" class="form-control" required>
-                @foreach($categories as $category)
                 <option value=" ">Select Category</option>
+                @foreach($categories as $category)
                 <option value="{{ $category->id }}">{{ $category->name }}</option>
                 @endforeach
             </select>
@@ -48,8 +48,8 @@
         <div class="form-group">
             <label for="supplier_id">Supplier:</label>
             <select name="supplier_id" class="form-control">
+                <option value=" ">Select Supplier</option>  
                 @foreach($suppliers as $supplier)
-                <option value=" ">Select Supplier</option>
                 <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
                 @endforeach
             </select>
