@@ -15,22 +15,40 @@
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=YourChosenFont&display=swap" rel="stylesheet">
 
-    <!-- Boothstrap -->
+    <!-- Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <!-- Sweetalert javascript -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.1.0/css/adminlte.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- SweetAlert -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
     <style>
+        body {
+            background: linear-gradient(90deg, rgba(233, 225, 215, 1) 0%, rgba(230, 230, 230, 1) 41%, rgba(159, 155, 161, 1) 100%);
+        }
+
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            color: #333;
+        }
+
         .nav-link {
-            position: relative;
-            /* Positioning context for the pseudo-element */
+            color: #555;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
             color: #000;
-            /* Default text color */
         }
 
         .nav-link::after {
@@ -39,32 +57,44 @@
             left: 0;
             right: 0;
             bottom: 0;
-            /* Position it at the bottom */
             height: 2px;
-            /* Thickness of the underline */
             background-color: black;
-            /* Underline color */
             transform: scaleX(0);
-            /* Start hidden */
             transition: transform 0.3s ease;
-            /* Animation */
         }
 
         .nav-link:hover::after,
         .nav-link:focus::after,
         .nav-link.active::after {
             transform: scaleX(1);
-            /* Show underline on hover, focus, or active */
+        }
+
+        .dropdown-item {
+            transition: background-color 0.3s;
+        }
+
+        .dropdown-item:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        main {
+            padding: 2rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem 0;
+            background-color: #f8f9fa;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
 
-<body style="background: rgb(233,225,215);
-background: linear-gradient(90deg, rgba(233,225,215,1) 0%, rgba(230,230,230,1) 41%, rgba(159,155,161,1) 100%);">
+<body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm sticky-top">
+        <nav class="navbar navbar-expand-md navbar-light bg-white sticky-top">
             <div class="container-fluid">
-                <a class="navbar-brand" style="font-weight: bold;" href="{{ url('/') }}">
+                <a class="navbar-brand" href="#">
                     {{ config('Cozy_ran', 'Cozy_ran') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -72,36 +102,24 @@ background: linear-gradient(90deg, rgba(233,225,215,1) 0%, rgba(230,230,230,1) 4
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mx-auto" style="font-weight: bold;">
+                    <ul class="navbar-nav mx-auto">
                         <li class="nav-item">
-                            <a href="{{ route('products.dashboard') }}" class="nav-link {{ request()->routeIs('products.dashboard') ? 'active' : '' }}">
-                                {{ __('Dashboard') }}
-                            </a>
+                            <a href="{{ route('products.home') }}" class="nav-link {{ request()->routeIs('products.home') ? 'active' : '' }}">{{ __('Dashboard') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('products.index') }}" class="nav-link {{ request()->routeIs('products.index') ? 'active' : '' }}">
-                                {{ __('Manage Products') }}
-                            </a>
+                            <a href="{{ route('products.index') }}" class="nav-link {{ request()->routeIs('products.index') ? 'active' : '' }}">{{ __('Manage Products') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('products.categories.index') }}" class="nav-link {{ request()->routeIs('products.categories.index') ? 'active' : '' }}">
-                                {{ __('Manage Categories') }}
-                            </a>
+                            <a href="{{ route('products.categories.index') }}" class="nav-link {{ request()->routeIs('products.categories.index') ? 'active' : '' }}">{{ __('Manage Categories') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('products.supplier.index') }}" class="nav-link {{ request()->routeIs('products.supplier.index') ? 'active' : '' }}">
-                                {{ __('Manage Suppliers') }}
-                            </a>
+                            <a href="{{ route('products.supplier.index') }}" class="nav-link {{ request()->routeIs('products.supplier.index') ? 'active' : '' }}">{{ __('Manage Suppliers') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('products.users.index') }}" class="nav-link {{ request()->routeIs('products.users.index') ? 'active' : '' }}">
-                                {{ __('Manage Users') }}
-                            </a>
+                            <a href="{{ route('products.users.index') }}" class="nav-link {{ request()->routeIs('products.users.index') ? 'active' : '' }}">{{ __('Manage Users') }}</a>
                         </li>
                     </ul>
 
-                    <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         @guest
                         @if (Route::has('login'))
@@ -123,8 +141,7 @@ background: linear-gradient(90deg, rgba(233,225,215,1) 0%, rgba(230,230,230,1) 4
 
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-                               document.getElementById('logout-form').submit();">
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     {{ __('Logout') }}
                                 </a>
 
@@ -139,11 +156,10 @@ background: linear-gradient(90deg, rgba(233,225,215,1) 0%, rgba(230,230,230,1) 4
             </div>
         </nav>
 
-
-
-        <main class="py-4">
+        <main>
             @yield('content')
         </main>
+
     </div>
 </body>
 

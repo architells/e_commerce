@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Auth\ProfileUpdateRequest;
+use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,11 +14,12 @@ class profileController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function show()
+    public function show(): View
     {
-        $user = Auth::user();
-        return view('customer.profile.show', compact('user'));
+        $user = Auth::user(); // Ensure you retrieve the authenticated user
+        return view('customer.profile.show', compact('user')); // Pass the user to the view
     }
+
 
     public function edit(Request $request): View
     {

@@ -13,9 +13,9 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('customer.profile.update') }}" class="mt-4">
+    <form method="post" action="{{ route('customer.profile.update') }}" class="mt-6 space-y-6">
         @csrf
-        @method('post')
+        @method('put')
 
         <div class="mb-3">
             <label for="name" class="form-label">{{ __('Name') }}</label>

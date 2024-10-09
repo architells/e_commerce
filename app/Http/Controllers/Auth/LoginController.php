@@ -21,7 +21,7 @@ class LoginController extends Controller
     {
         // Check the user's role and redirect accordingly
         if ($user->roles->contains('role_name', 'Admin')) {
-            return redirect()->route('products.index');
+            return redirect()->route('products.home');
         }
 
         return redirect()->intended($this->redirectTo); 

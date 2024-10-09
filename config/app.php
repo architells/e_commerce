@@ -159,7 +159,8 @@ return [
          * Application Service Providers...
          */
         App\Providers\AppServiceProvider::class,
-        App\Providers\AuthServiceProvider::class,  // This is where your AuthServiceProvider should be
+        App\Providers\AuthServiceProvider::class, 
+        App\Providers\ViewServiceProvider::class, 
     ],
 
 ];

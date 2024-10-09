@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Supplier;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -18,8 +19,9 @@ class productController extends Controller
      */
     public function dashboard()
     {
+        $newOrdersCount = Order::where('shipping_status', 'Pending')->count();
         // Return a view with the products
-        return view('products.dashboard');
+        return view('products.home', compact('newOrdersCount'));
     }
 
     public function index(Request $request)

@@ -34,7 +34,7 @@
                 No suppliers found.
             </div>
             @else
-            <table class="table table-bordered">
+            <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>ID</th>
