@@ -220,13 +220,14 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="date_manufactured">Date Manufactured</label>
-                                    <input type="text" class="form-control @error('date_manufactured') is-invalid @enderror" id="date_manufactured" name="date_manufactured" value="{{ old('date_manufactured') }}" placeholder="YYYY-MM-DD">
+                                    <input type="date" class="form-control @error('date_manufactured') is-invalid @enderror" id="date_manufactured" name="date_manufactured" value="{{ old('date_manufactured') }}">
                                     @error('date_manufactured')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
                                     @enderror
                                 </div>
+
                                 <button type="submit" class="btn btn-primary">Add Product</button>
                             </form>
                         </div>

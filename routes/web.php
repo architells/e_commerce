@@ -91,3 +91,5 @@ Route::delete('/discount-products/destroy/{id}', [ProductDiscountController::cla
 
 
 Route::get('/activity-logs', [ActivityLogController::class, 'index'])->name('admin.activity_logs.dashboard');
+
+

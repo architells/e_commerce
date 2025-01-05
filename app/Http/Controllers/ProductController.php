@@ -68,7 +68,7 @@ class ProductController extends Controller
             'volume' => ['required', 'integer', 'max:255', 'regex:/^[0-9]+(\.[0-9]+)?\s?$/i'],
             'volume_unit' => 'required',
             'supplier_id' => 'required|exists:suppliers,supplier_id',
-            'date_manufactured' => ['required', 'date'],
+            'date_manufactured' => ['required', 'date', 'before_or_equal:' . now()],
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,avif|max:2048',
         ], [
             'brand_id.required' => 'The brand field is required.',
@@ -90,7 +90,7 @@ class ProductController extends Controller
             'supplier_id.required' => 'The supplier field is required.',
             'image.mimes' => 'The image must be a file of type: jpeg, png, jpg, gif, avif.',
             'image.max' => 'The image may not be greater than 2048 kilobytes.',
-            'date_manufactured.date' => 'The date manufactured must be a valid date.',
+            'date_manufactured.before_or_equal' => 'The date manufactured must not be a future date.',
         ]);
 
         $imagePath = '';
@@ -137,6 +137,8 @@ class ProductController extends Controller
                     'action' => 'stock_in',
                 ]);
 
+                $this->activityLogger->logUpdate('products', $existingProduct->toArray());
+
                 return redirect()->route('products.index')
                     ->with('success', 'Stock unit found, new stock added.');
             }
@@ -173,6 +175,8 @@ class ProductController extends Controller
                 'quantity_change' => $request->stock,
                 'action' => 'stock_in',
             ]);
+
+            $this->activityLogger->logCreate('products', $product->toArray());
 
             return redirect()->route('products.index')
                 ->with('success', 'Product created and stock added.');

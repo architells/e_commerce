@@ -167,16 +167,16 @@
                 </li>
 
 
-                <li class="nav-item mt-3">
+                <!-- <li class="nav-item mt-3">
                     <a href="#" class="nav-link text-danger d-flex align-items-center" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         <i class="nav-icon bi bi-door-closed"></i>
                         <p class="ml-2">Logout</p>
                     </a>
-                </li>
+                </li> -->
 
-                <form method="POST" action="" id="logout-form" style="display: none;">
+                <!-- <form method="POST" action="" id="logout-form" style="display: none;">
                     @csrf
-                </form>
+                </form> -->
             </ul>
         </nav>
     </div>
